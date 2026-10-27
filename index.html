@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Scheduling Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- ─── Top Navbar ─── -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-microchip"></i>
+            <span>CPU Scheduling Simulator</span>
+        </div>
+        <div class="nav-links"></div>
+        <div class="nav-right">
+            <span class="status-indicator" id="statusIndicator">
+                <span class="status-dot"></span>
+                Ready
+            </span>
+            <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="สลับ Dark / Light Mode" aria-label="Toggle Dark and Light Mode">
+                <i class="fas fa-sun" id="themeIcon"></i>
+                <span id="themeLabel">Light Mode</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ─── Main Content ─── -->
+    <div class="main-layout">
+
+        <!-- ════ LEFT PANEL ════ -->
+        <aside class="left-panel">
+
+            <!-- Process Configuration -->
+            <div class="panel-section">
+                <h2 class="section-title">Process Configuration</h2>
+                <div class="config-row">
+                    <label>Number of Processes</label>
+                    <div class="input-with-btn">
+                        <input type="number" id="processCount" min="1" max="20" placeholder="e.g. 3, 5, 10">
+                        <button class="btn-accent" onclick="generateProcessInputs()">
+                            <i class="fas fa-plus-circle"></i> Generate
+                        </button>
+                    </div>
+                    <div id="processCountError" class="error-toast hidden"></div>
+                </div>
+            </div>
+
+            <!-- Burst Time Input -->
+            <div class="panel-section hidden" id="burstSection">
+                <div class="section-header-row">
+                    <h2 class="section-title">Burst Time</h2>
+                    <button class="btn-ghost" onclick="randomizeBurstTimes()">
+                        <i class="fas fa-dice"></i> Random
+                    </button>
+                </div>
+                <div class="bt-scroll-area" id="btScrollArea">
+                    <!-- Process BT inputs generated here -->
+                </div>
+                <div id="burstTimeError" class="error-toast hidden"></div>
+            </div>
+
+            <!-- Algorithm Control -->
+            <div class="panel-section hidden" id="algoSection">
+                <h2 class="section-title">Select Algorithm</h2>
+                <div class="algo-grid">
+                    <div class="algo-card selected" data-algo="FCFS" onclick="toggleAlgo(this)">
+                        <div class="algo-card-icon"><i class="fas fa-arrow-right-long"></i></div>
+                        <div class="algo-card-name">FCFS</div>
+                        <div class="algo-card-desc">Processes are executed in order of arrival</div>
+                    </div>
+                    <div class="algo-card selected" data-algo="SJF" onclick="toggleAlgo(this)">
+                        <div class="algo-card-icon"><i class="fas fa-arrow-down-short-wide"></i></div>
+                        <div class="algo-card-name">SJF</div>
+                        <div class="algo-card-desc">Shortest burst time processes execute first</div>
+                    </div>
+                    <div class="algo-card selected" data-algo="RR" onclick="toggleAlgo(this)">
+                        <div class="algo-card-icon"><i class="fas fa-rotate"></i></div>
+                        <div class="algo-card-name">Round Robin</div>
+                        <div class="algo-card-desc">Time-slicing with fixed quantum</div>
+                    </div>
+                </div>
+
+                <!-- RR Quantum Config -->
+                <div class="rr-quantum-row" id="rrQuantumRow">
+                    <label><i class="fas fa-clock"></i> Time Quantum</label>
+                    <input type="number" id="timeQuantum" min="1" value="2" placeholder="2">
+                </div>
+                <div id="quantumError" class="error-toast hidden"></div>
+
+                <!-- Selected summary -->
+                <div class="selected-summary" id="selectedSummary">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="selectedText">Selected: FCFS, SJF, Round Robin</span>
+                </div>
+
+                <!-- Run Button -->
+                <button class="btn-run" onclick="runSimulation()">
+                    <i class="fas fa-play"></i> Run Simulation
+                </button>
+            </div>
+        </aside>
+
+        <!-- ════ RIGHT PANEL ════ -->
+        <main class="right-panel">
+
+            <!-- Welcome / Empty State -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon"><i class="fas fa-microchip"></i></div>
+                <h2>CPU Scheduling Simulator</h2>
+                <p>Configure processes on the left panel, select algorithms, and run the simulation to see the Gantt chart, performance metrics, and detailed results.</p>
+            </div>
+
+            <!-- Gantt Chart Visualization -->
+            <div class="dashboard-card hidden" id="ganttCard">
+                <div class="card-title-bar">
+                    <h3><i class="fas fa-chart-gantt"></i> Gantt Chart Visualization</h3>
+                    <div class="algo-tabs" id="algoTabs">
+                        <!-- tabs generated dynamically -->
+                    </div>
+                </div>
+                <div class="card-content" id="ganttContent">
+                    <!-- Gantt chart rendered here -->
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="dashboard-card hidden" id="metricsCard">
+                <div class="card-title-bar">
+                    <h3><i class="fas fa-chart-line"></i> Performance Metrics</h3>
+                </div>
+                <div class="metrics-grid" id="metricsGrid">
+                    <!-- metrics rendered here -->
+                </div>
+            </div>
+
+            <!-- Process Details Table -->
+            <div class="dashboard-card hidden" id="detailsCard">
+                <div class="card-title-bar">
+                    <h3><i class="fas fa-table"></i> Process Details</h3>
+                </div>
+                <div class="card-content">
+                    <div class="table-scroll" id="detailsTable">
+                        <!-- table rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Section -->
+            <div class="dashboard-card hidden" id="comparisonCard">
+                <div class="card-title-bar">
+                    <h3><i class="fas fa-scale-balanced"></i> Algorithm Comparison</h3>
+                </div>
+                <div class="card-content">
+                    <div class="comparison-layout">
+                        <div class="table-scroll" id="comparisonTable"></div>
+                        <div class="chart-bars" id="comparisonBars"></div>
+                    </div>
+                    <div class="best-badge" id="bestBadge"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1191 @@
+/* ============================================
+   CSS Variables & Theme
+   ============================================ */
+:root, [data-theme="dark"] {
+    --bg-body: #0B1120;
+    --bg-panel: #111827;
+    --bg-card: #1A2332;
+    --bg-card-hover: #1F2B3D;
+    --bg-input: #0F1729;
+    --bg-elevated: #243044;
+    --border: #1E3048;
+    --border-light: #2A3F5A;
+    --text-primary: #E2E8F0;
+    --text-secondary: #8899AA;
+    --text-muted: #5A6B7D;
+    --accent: #22D3EE;
+    --accent-glow: rgba(34, 211, 238, 0.18);
+    --accent-text: #0B1120;
+    --accent2: #818CF8;
+    --accent3: #34D399;
+    --accent4: #F472B6;
+    --danger: #F87171;
+    --warning: #FBBF24;
+    --success: #34D399;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.35);
+    --tooltip-bg: #1E293B;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+    --bg-body: #F3F4F6;
+    --bg-panel: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #F9FAFB;
+    --bg-input: #FFFFFF;
+    --bg-elevated: #F3F4F6;
+    --border: #E5E7EB;
+    --border-light: #D1D5DB;
+    --text-primary: #111827;
+    --text-secondary: #4B5563;
+    --text-muted: #6B7280;
+    --accent: #0284C7;
+    --accent-glow: rgba(2, 132, 199, 0.18);
+    --accent-text: #FFFFFF;
+    --accent2: #6366F1;
+    --accent3: #10B981;
+    --accent4: #EC4899;
+    --danger: #EF4444;
+    --warning: #D97706;
+    --success: #10B981;
+    --shadow: 0 4px 20px rgba(0,0,0,0.06);
+    --tooltip-bg: #1F2937;
+}
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg-body);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+/* ============================================
+   Navbar
+   ============================================ */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 56px;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: background-color var(--transition), border-color var(--transition);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+}
+
+.nav-brand i {
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+
+.nav-links {
+    display: none;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    padding: 5px 12px;
+    background: var(--bg-elevated);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    animation: pulse 2s infinite;
+}
+
+.status-dot.running {
+    background: var(--accent);
+    animation: pulse 0.8s infinite;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+}
+
+.theme-toggle-btn:hover {
+    background: var(--bg-elevated);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.theme-toggle-btn i {
+    color: var(--warning);
+    font-size: 0.95rem;
+    transition: transform 0.3s ease;
+}
+
+[data-theme="light"] .theme-toggle-btn i {
+    color: #6366F1;
+}
+
+.theme-toggle-btn:hover i {
+    transform: rotate(20deg) scale(1.1);
+}
+
+/* ============================================
+   Main Layout — 2 Column
+   ============================================ */
+.main-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    min-height: calc(100vh - 56px);
+}
+
+/* ============================================
+   Left Panel
+   ============================================ */
+.left-panel {
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    padding: 24px 20px;
+    height: calc(100vh - 56px);
+    position: sticky;
+    top: 56px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: background-color var(--transition), border-color var(--transition);
+}
+
+/* Custom Scrollbar for Left Panel */
+.left-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.left-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.left-panel::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 10px;
+}
+
+.panel-section {
+    animation: fadeIn 0.3s ease;
+}
+
+.section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+}
+
+.section-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.section-header-row .section-title {
+    margin-bottom: 0;
+}
+
+/* Config inputs */
+.config-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.config-row label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.input-with-btn {
+    display: flex;
+    gap: 8px;
+}
+
+input[type="number"] {
+    flex: 1;
+    padding: 10px 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+input[type="number"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+input[type="number"].input-error {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.15);
+}
+
+input[type="number"]::placeholder {
+    color: var(--text-muted);
+}
+
+/* Buttons */
+.btn-accent {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: var(--accent-text);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-accent:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: transparent;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.btn-run {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-run:hover {
+    box-shadow: 0 0 24px var(--accent-glow);
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
+/* Burst time scroll area */
+.bt-scroll-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 240px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.bt-scroll-area::-webkit-scrollbar {
+    width: 5px;
+}
+
+.bt-scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.bt-scroll-area::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 10px;
+}
+
+.bt-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+}
+
+.bt-label {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--accent);
+    min-width: 32px;
+}
+
+.bt-at {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.bt-row input[type="number"] {
+    width: 80px;
+    padding: 6px 10px;
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+/* ============================================
+   Algorithm Cards
+   ============================================ */
+.algo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.algo-card {
+    padding: 16px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.algo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    transition: var(--transition);
+}
+
+.algo-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-light);
+}
+
+.algo-card.selected {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.algo-card.selected::before {
+    background: var(--accent);
+}
+
+.algo-card-icon {
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+
+.algo-card.selected .algo-card-icon {
+    color: var(--accent);
+}
+
+.algo-card-name {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.algo-card-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* RR Quantum config */
+.rr-quantum-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+}
+
+.rr-quantum-row label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.rr-quantum-row label i {
+    color: var(--warning);
+}
+
+.rr-quantum-row input[type="number"] {
+    width: 70px;
+    text-align: center;
+    padding: 6px 10px;
+}
+
+/* Selected summary */
+.selected-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.selected-summary i {
+    color: var(--success);
+}
+
+/* ============================================
+   Right Panel
+   ============================================ */
+.right-panel {
+    padding: 24px 28px 80px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+}
+
+/* Empty state */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 400px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    color: var(--border-light);
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state h2 {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    max-width: 420px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* ============================================
+   Dashboard Cards
+   ============================================ */
+.dashboard-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: visible;
+    animation: fadeSlideUp 0.4s ease;
+}
+
+.card-title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.card-title-bar h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-title-bar h3 i {
+    color: var(--accent);
+}
+
+.card-content {
+    padding: 20px;
+}
+
+/* ============================================
+   Algorithm Tabs (in Gantt card)
+   ============================================ */
+.algo-tabs {
+    display: flex;
+    gap: 4px;
+}
+
+.algo-tab {
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.algo-tab:hover {
+    border-color: var(--border-light);
+    color: var(--text-primary);
+}
+
+.algo-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+}
+
+/* ============================================
+   Gantt Chart V2 — Precision Aligned
+   ============================================ */
+.gantt-wrapper {
+    padding: 24px 20px;
+}
+
+/* 1. Top Ruler */
+.gantt-ruler-track {
+    position: relative;
+    width: 100%;
+    height: 28px;
+    margin-bottom: 6px;
+}
+
+.gantt-ruler-tick {
+    position: absolute;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+}
+
+.gantt-ruler-tick:first-child {
+    transform: translateX(0);
+    align-items: flex-start;
+}
+
+.gantt-ruler-tick:last-child {
+    transform: translateX(-100%);
+    align-items: flex-end;
+}
+
+.tick-num {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    line-height: 1;
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+.tick-line {
+    width: 1px;
+    height: 6px;
+    background: var(--border-light);
+}
+
+/* 2. Bar Track */
+.gantt-bar-track {
+    display: flex;
+    align-items: stretch;
+    min-height: 52px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    position: relative;
+    width: 100%;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+.gantt-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.88rem;
+    color: white;
+    position: relative;
+    border-right: 1px solid rgba(0,0,0,0.25);
+    cursor: pointer;
+    transition: filter 0.2s;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    overflow: hidden;
+    animation: segmentGrow 0.5s ease both;
+    min-width: 0;
+}
+
+.gantt-segment:last-child {
+    border-right: none;
+}
+
+.gantt-segment:hover {
+    filter: brightness(1.2);
+    z-index: 2;
+}
+
+.seg-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 4px;
+}
+
+/* Gantt tooltip */
+.gantt-segment .g-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--tooltip-bg);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 50;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    pointer-events: none;
+    text-shadow: none;
+}
+
+.gantt-segment .g-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--border-light);
+}
+
+.gantt-segment:hover .g-tooltip {
+    display: block;
+    animation: tooltipIn 0.15s ease;
+}
+
+/* 3. Range labels directly under blocks */
+.gantt-ranges-row {
+    display: flex;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.gantt-range-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.74rem;
+    font-weight: 600;
+    min-width: 0;
+    overflow: hidden;
+    padding: 2px 2px;
+}
+
+.gantt-range-cell span {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* 4. Exact Boundary Axis */
+.gantt-boundary-axis {
+    position: relative;
+    width: 100%;
+    height: 22px;
+    margin-top: 4px;
+}
+
+.gantt-boundary-mark {
+    position: absolute;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+}
+
+.gantt-boundary-mark:first-child {
+    transform: translateX(0);
+    align-items: flex-start;
+}
+
+.gantt-boundary-mark:last-child {
+    transform: translateX(-100%);
+    align-items: flex-end;
+}
+
+.boundary-line {
+    width: 1px;
+    height: 5px;
+    background: var(--accent);
+    opacity: 0.6;
+}
+
+.boundary-num {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Legend */
+.gantt-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.gantt-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.gantt-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Execution order */
+.gantt-order {
+    margin-top: 12px;
+    padding: 8px 14px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.gantt-order strong {
+    color: var(--accent);
+}
+
+/* Process colors */
+.gc-1  { background: linear-gradient(135deg, #6366F1, #4F46E5); }
+.gc-2  { background: linear-gradient(135deg, #10B981, #059669); }
+.gc-3  { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.gc-4  { background: linear-gradient(135deg, #EF4444, #DC2626); }
+.gc-5  { background: linear-gradient(135deg, #A78BFA, #7C3AED); }
+.gc-6  { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+.gc-7  { background: linear-gradient(135deg, #EC4899, #DB2777); }
+.gc-8  { background: linear-gradient(135deg, #14B8A6, #0D9488); }
+.gc-9  { background: linear-gradient(135deg, #84CC16, #65A30D); }
+.gc-10 { background: linear-gradient(135deg, #F97316, #EA580C); }
+.gc-11 { background: linear-gradient(135deg, #6366F1, #4338CA); }
+.gc-12 { background: linear-gradient(135deg, #2DD4BF, #0D9488); }
+.gc-13 { background: linear-gradient(135deg, #FBBF24, #B45309); }
+.gc-14 { background: linear-gradient(135deg, #FB7185, #BE123C); }
+.gc-15 { background: linear-gradient(135deg, #C084FC, #6D28D9); }
+.gc-16 { background: linear-gradient(135deg, #60A5FA, #1D4ED8); }
+.gc-17 { background: linear-gradient(135deg, #F472B6, #BE185D); }
+.gc-18 { background: linear-gradient(135deg, #22D3EE, #0E7490); }
+.gc-19 { background: linear-gradient(135deg, #A3E635, #4D7C0F); }
+.gc-20 { background: linear-gradient(135deg, #FB923C, #C2410C); }
+
+@keyframes segmentGrow {
+    from { transform: scaleX(0); opacity: 0; }
+    to   { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes tooltipIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ============================================
+   Metrics Cards
+   ============================================ */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    padding: 20px;
+}
+
+.metric-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 14px;
+    background: var(--bg-elevated);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+}
+
+.metric-card .metric-icon {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 1.1rem;
+    opacity: 0.5;
+}
+
+.metric-card .metric-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.metric-card .metric-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.metric-card.mc-wt .metric-value  { color: var(--accent); }
+.metric-card.mc-wt .metric-icon   { color: var(--accent); }
+.metric-card.mc-tat .metric-value  { color: var(--accent3); }
+.metric-card.mc-tat .metric-icon   { color: var(--accent3); }
+.metric-card.mc-total .metric-value { color: var(--accent4); }
+.metric-card.mc-total .metric-icon  { color: var(--accent4); }
+
+/* ============================================
+   Process Details Table
+   ============================================ */
+.table-scroll {
+    overflow-x: auto;
+}
+
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.details-table th {
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.details-table td {
+    padding: 10px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.details-table tbody tr:hover {
+    background: var(--accent-glow);
+}
+
+.details-table .proc-cell {
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.details-table .avg-row {
+    background: rgba(251, 191, 36, 0.12);
+    font-weight: 700;
+}
+
+.details-table .avg-row td {
+    color: var(--warning);
+}
+
+/* ============================================
+   Comparison
+   ============================================ */
+.comparison-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: center;
+}
+
+.comparison-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.comparison-tbl th {
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--border);
+}
+
+.comparison-tbl td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.comparison-tbl tbody tr:hover {
+    background: var(--accent-glow);
+}
+
+.comparison-tbl .algo-name-cell {
+    font-weight: 700;
+    color: var(--accent);
+    text-align: left;
+}
+
+/* Bar chart for comparison */
+.chart-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 24px;
+    height: 180px;
+    padding: 0 12px;
+}
+
+.chart-bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.chart-bar-value {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.chart-bar {
+    width: 48px;
+    border-radius: 6px 6px 0 0;
+    transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chart-bar-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.chart-bar.bar-fcfs { background: linear-gradient(180deg, #818CF8, #4F46E5); }
+.chart-bar.bar-sjf  { background: linear-gradient(180deg, #34D399, #059669); }
+.chart-bar.bar-rr   { background: linear-gradient(180deg, #FBBF24, #D97706); }
+
+/* Best badge */
+.best-badge {
+    margin-top: 20px;
+    padding: 14px 20px;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent);
+    text-align: center;
+}
+
+/* ============================================
+   Error Toast
+   ============================================ */
+.error-toast {
+    padding: 8px 12px;
+    background: rgba(248, 113, 113, 0.1);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    border-radius: var(--radius-sm);
+    color: var(--danger);
+    font-size: 0.82rem;
+    font-weight: 600;
+    animation: shakeIn 0.3s ease;
+}
+
+@keyframes shakeIn {
+    0%   { transform: translateX(-6px); }
+    25%  { transform: translateX(4px); }
+    50%  { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+}
+
+/* ============================================
+   Utilities
+   ============================================ */
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 900px) {
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
+    .left-panel {
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+    .right-panel {
+        max-height: none;
+    }
+    .nav-links {
+        display: none;
+    }
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    .comparison-layout {
+        grid-template-columns: 1fr;
+    }
+    .algo-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        padding: 0 12px;
+    }
+    .left-panel {
+        padding: 14px;
+    }
+    .right-panel {
+        padding: 14px;
+    }
+    .algo-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
