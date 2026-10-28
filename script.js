@@ -148,7 +148,8 @@ function randomizeBurstTimes() {
     for (let i = 1; i <= n; i++) {
         const inp = document.getElementById('bt_' + i);
         if (inp) {
-            inp.value = Math.floor(Math.random() * 20) + 1;
+            // Random burst time between 1 and 10
+            inp.value = Math.floor(Math.random() * 10) + 1;
             inp.classList.remove('input-error');
         }
     }
