@@ -89,6 +89,7 @@ function toggleThemeInfo() {
 
 let simulationResults = {};
 let currentTab = '';
+let currentTimeQuantum = 2;
 
 
 // ─── Step 1: Generate Process Inputs ────────────────
@@ -326,6 +327,9 @@ function computeRR(procs, quantum) {
 function displayResults(results, tq) {
     document.getElementById('emptyState').classList.add('hidden');
 
+    simulationResults = results;
+    currentTimeQuantum = tq;
+
     const algoKeys = Object.keys(results);
     currentTab = algoKeys[0];
 
@@ -339,25 +343,22 @@ function displayResults(results, tq) {
         let label = key;
         if (key === 'RR') label = `RR (Q=${tq})`;
         btn.textContent = label;
-        btn.onclick = () => switchTab(key, tq);
+        btn.onclick = () => switchTab(key);
         tabsDiv.appendChild(btn);
     });
 
-    // Show cards
-    document.getElementById('ganttCard').classList.remove('hidden');
-    document.getElementById('metricsCard').classList.remove('hidden');
-    document.getElementById('detailsCard').classList.remove('hidden');
+    // Add Comparison tab if multiple algorithms
+    if (algoKeys.length > 1) {
+        const compBtn = document.createElement('button');
+        compBtn.className = 'algo-tab tab-comparison';
+        compBtn.dataset.algo = 'COMPARISON';
+        compBtn.innerHTML = '<i class="fas fa-scale-balanced"></i> Comparison';
+        compBtn.onclick = () => switchTab('COMPARISON');
+        tabsDiv.appendChild(compBtn);
+    }
 
     // Render first tab
-    renderAlgoResult(currentTab, results[currentTab], tq);
-
-    // Comparison
-    if (algoKeys.length > 1) {
-        renderComparison(results, tq);
-        document.getElementById('comparisonCard').classList.remove('hidden');
-    } else {
-        document.getElementById('comparisonCard').classList.add('hidden');
-    }
+    switchTab(currentTab);
 
     // Scroll window and panels to the top
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -377,17 +378,38 @@ function hideResults() {
 
 // ─── Switch Tab ─────────────────────────────────────
 
-function switchTab(algo, tq) {
+function switchTab(algo) {
     currentTab = algo;
     document.querySelectorAll('.algo-tab').forEach(t => t.classList.remove('active'));
-    document.querySelector(`.algo-tab[data-algo="${algo}"]`).classList.add('active');
-    renderAlgoResult(algo, simulationResults[algo], tq);
+    const targetBtn = document.querySelector(`.algo-tab[data-algo="${algo}"]`);
+    if (targetBtn) targetBtn.classList.add('active');
+
+    if (algo === 'COMPARISON') {
+        renderComparisonView(simulationResults, currentTimeQuantum);
+    } else {
+        renderAlgoResult(algo, simulationResults[algo], currentTimeQuantum);
+    }
 }
 
 
 // ─── Render Algorithm Result ────────────────────────
 
 function renderAlgoResult(algoName, result, tq) {
+    // 1. Update Title
+    const titleEl = document.getElementById('ganttCardTitle');
+    if (titleEl) {
+        let algoTitle = algoName;
+        if (algoName === 'RR') algoTitle = `Round Robin (Q=${tq})`;
+        else if (algoName === 'SJF') algoTitle = 'SJF (Non-preemptive)';
+        titleEl.innerHTML = `<i class="fas fa-chart-gantt"></i> Gantt Chart Visualization — ${algoTitle}`;
+    }
+
+    // 2. Control Cards Visibility: Show single-algo cards, hide comparison card
+    document.getElementById('ganttCard').classList.remove('hidden');
+    document.getElementById('metricsCard').classList.remove('hidden');
+    document.getElementById('detailsCard').classList.remove('hidden');
+    document.getElementById('comparisonCard').classList.add('hidden');
+
     const procs = result.processes;
     const schedule = result.schedule;
     const totalTime = schedule.length > 0 ? schedule[schedule.length - 1].end : 0;
@@ -454,12 +476,83 @@ function renderAlgoResult(algoName, result, tq) {
 }
 
 
+// ─── Render Comparison View ─────────────────────────
+
+function renderComparisonView(results, tq) {
+    // 1. Update Title
+    const titleEl = document.getElementById('ganttCardTitle');
+    if (titleEl) {
+        titleEl.innerHTML = '<i class="fas fa-scale-balanced"></i> Gantt Chart Comparison (All Algorithms)';
+    }
+
+    // 2. Control Cards Visibility: Hide single-algo cards, show comparison card
+    document.getElementById('metricsCard').classList.add('hidden');
+    document.getElementById('detailsCard').classList.add('hidden');
+    document.getElementById('ganttCard').classList.remove('hidden');
+    document.getElementById('comparisonCard').classList.remove('hidden');
+
+    // 3. Render stacked Gantt charts for all algorithms
+    renderComparativeGanttCharts(results, tq);
+
+    // 4. Render comparison table & chart
+    renderComparison(results, tq);
+}
+
+function renderComparativeGanttCharts(results, tq) {
+    const container = document.getElementById('ganttContent');
+    container.innerHTML = '';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'comparison-gantt-wrapper';
+
+    Object.keys(results).forEach(key => {
+        const res = results[key];
+        const procs = res.processes;
+        const sched = res.schedule;
+        const totalTime = sched.length > 0 ? sched[sched.length - 1].end : 0;
+        const avgWT  = round2(procs.reduce((s, p) => s + p.wt, 0) / procs.length);
+        const avgTAT = round2(procs.reduce((s, p) => s + p.tat, 0) / procs.length);
+
+        let displayName = key;
+        if (key === 'RR') displayName = `Round Robin (Q=${tq})`;
+        else if (key === 'SJF') displayName = 'SJF (Non-preemptive)';
+        else if (key === 'FCFS') displayName = 'FCFS';
+
+        const item = document.createElement('div');
+        item.className = 'comp-gantt-item';
+
+        item.innerHTML = `
+            <div class="comp-gantt-header">
+                <span class="comp-algo-name">
+                    <i class="fas fa-chart-gantt"></i> ${displayName}
+                </span>
+                <div class="comp-algo-badge-group">
+                    <span class="comp-algo-badge">Avg WT: <strong>${avgWT}</strong></span>
+                    <span class="comp-algo-badge">Avg TAT: <strong>${avgTAT}</strong></span>
+                </div>
+            </div>
+        `;
+
+        const chartBox = document.createElement('div');
+        buildGanttChartElement(chartBox, sched, totalTime);
+        item.appendChild(chartBox);
+
+        wrapper.appendChild(item);
+    });
+
+    container.appendChild(wrapper);
+}
+
+
 // ─── Gantt Chart Rendering ──────────────────────────
 
 function renderGanttChart(schedule, totalTime) {
     const container = document.getElementById('ganttContent');
     container.innerHTML = '';
+    buildGanttChartElement(container, schedule, totalTime);
+}
 
+function buildGanttChartElement(container, schedule, totalTime) {
     if (schedule.length === 0 || totalTime === 0) return;
 
     const wrapper = document.createElement('div');

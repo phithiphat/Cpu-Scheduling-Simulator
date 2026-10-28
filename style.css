@@ -630,6 +630,82 @@ input[type="number"]::placeholder {
     color: var(--accent-text);
 }
 
+.algo-tab.tab-comparison {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-color: var(--accent2);
+    color: var(--accent2);
+}
+
+.algo-tab.tab-comparison:hover {
+    background: rgba(129, 140, 248, 0.12);
+    color: var(--text-primary);
+}
+
+.algo-tab.tab-comparison.active {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    border-color: transparent;
+    color: #FFFFFF;
+    box-shadow: 0 0 14px var(--accent-glow);
+}
+
+/* Comparative Gantt Charts in Comparison View */
+.comparison-gantt-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.comp-gantt-item {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    transition: var(--transition);
+}
+
+.comp-gantt-item:hover {
+    border-color: var(--border-light);
+}
+
+.comp-gantt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.comp-algo-name {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comp-algo-badge-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.comp-algo-badge {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.comp-algo-badge strong {
+    color: var(--accent);
+}
+
 /* ============================================
    Gantt Chart V2 — Precision Aligned
    ============================================ */
