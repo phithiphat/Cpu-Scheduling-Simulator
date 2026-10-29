@@ -410,6 +410,12 @@ function renderAlgoResult(algoName, result, tq) {
     document.getElementById('detailsCard').classList.remove('hidden');
     document.getElementById('comparisonCard').classList.add('hidden');
 
+    // 3. Reorder: Process Details first, then Gantt, then Metrics
+    document.getElementById('detailsCard').style.order = '-2';
+    document.getElementById('ganttCard').style.order = '0';
+    document.getElementById('metricsCard').style.order = '1';
+    document.getElementById('comparisonCard').style.order = '2';
+
     const procs = result.processes;
     const schedule = result.schedule;
     const totalTime = schedule.length > 0 ? schedule[schedule.length - 1].end : 0;
@@ -490,6 +496,12 @@ function renderComparisonView(results, tq) {
     document.getElementById('detailsCard').classList.add('hidden');
     document.getElementById('ganttCard').classList.remove('hidden');
     document.getElementById('comparisonCard').classList.remove('hidden');
+
+    // 3. Reorder: Comparison first, then Gantt
+    document.getElementById('comparisonCard').style.order = '-2';
+    document.getElementById('ganttCard').style.order = '0';
+    document.getElementById('metricsCard').style.order = '1';
+    document.getElementById('detailsCard').style.order = '2';
 
     // 3. Render stacked Gantt charts for all algorithms
     renderComparativeGanttCharts(results, tq);
