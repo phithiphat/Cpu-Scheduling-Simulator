@@ -416,6 +416,13 @@ function renderAlgoResult(algoName, result, tq) {
     document.getElementById('metricsCard').style.order = '1';
     document.getElementById('comparisonCard').style.order = '2';
 
+    // 4. Move tabs to detailsCard title bar
+    const tabs = document.getElementById('algoTabs');
+    const detailsTitleBar = document.getElementById('detailsTitleBar');
+    if (tabs && detailsTitleBar) {
+        detailsTitleBar.appendChild(tabs);
+    }
+
     const procs = result.processes;
     const schedule = result.schedule;
     const totalTime = schedule.length > 0 ? schedule[schedule.length - 1].end : 0;
@@ -502,6 +509,13 @@ function renderComparisonView(results, tq) {
     document.getElementById('ganttCard').style.order = '0';
     document.getElementById('metricsCard').style.order = '1';
     document.getElementById('detailsCard').style.order = '2';
+
+    // 4. Move tabs to comparisonCard title bar
+    const tabs = document.getElementById('algoTabs');
+    const comparisonTitleBar = document.getElementById('comparisonTitleBar');
+    if (tabs && comparisonTitleBar) {
+        comparisonTitleBar.appendChild(tabs);
+    }
 
     // 3. Render stacked Gantt charts for all algorithms
     renderComparativeGanttCharts(results, tq);
