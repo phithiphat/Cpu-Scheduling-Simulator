@@ -768,8 +768,11 @@ function renderComparison(results, tq) {
 }
 
 
-// ─── Init: RR quantum visibility ────────────────────
+// ─── Init: RR quantum visibility & default processes ─
 
 document.getElementById('processCount').addEventListener('keydown', e => {
     if (e.key === 'Enter') generateProcessInputs();
 });
+
+// Auto-generate 3 processes on page load
+generateProcessInputs();

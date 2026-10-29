@@ -201,7 +201,7 @@ Cpu-Scheduling-Simulator/
 
 | เครื่องมือ AI | วัตถุประสงค์ |
 |---|---|
-| **Google Gemini** | ใช้ในการ Generate โค้ด, Debug, และปรึกษาเรื่องการออกแบบอัลกอริทึม |
+| **Google Gemini** | ใช้ในการตรวจสอบความถูกต้อง |
 | **Claude code** | ใช้ในการ Generate โค้ด, Debug, และปรึกษาเรื่องการออกแบบอัลกอริทึม |
 | **Antigravity (Google Deepmind)** | ใช้ในการ Pair Programming, ปรับปรุง README, และ Review โค้ด |
 
