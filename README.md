@@ -67,7 +67,8 @@ A modern, responsive web application for simulating and comparing CPU Scheduling
 ```
 Cpu-Scheduling-Simulator/
 ├── index.html      # หน้าหลักของแอปพลิเคชัน
-├── style.css       # สไตล์ทั้งหมด (Dark/Light Theme)
+├── style.css       # สไตล์หลักและ Layout (Dashboard, Dark/Light Theme)
+├── gantt.css       # สไตล์ Gantt Chart Visualization และ Animation
 ├── script.js       # ตรรกะอัลกอริทึมและ UI Logic
 ├── README.md       # เอกสารโปรเจกต์ (ไฟล์นี้)
 └── .gitignore      # ไฟล์ที่ไม่ต้องการ Track ใน Git
@@ -318,9 +319,9 @@ Cpu-Scheduling-Simulator/
 
 | เครื่องมือ AI | วัตถุประสงค์ |
 |---|---|
-| **Google Gemini** | ใช้ในการตรวจสอบความถูกต้อง |
+| **Google Gemini** | ใช้ในการตรวจสอบความถูกต้อง , จัดทำ README, และ Review โค้ด|
 | **Claude code** | ใช้ในการ Generate โค้ด, Debug, และปรึกษาเรื่องการออกแบบอัลกอริทึม |
-| **Antigravity (Google Deepmind)** | ใช้ในการ Pair Programming, ปรับปรุง README, และ Review โค้ด |
+| **Antigravity (Google Deepmind)** | ใช้ในการ Pair Programming |
 
 ### ตัวอย่าง Prompt สำคัญที่ใช้
 
